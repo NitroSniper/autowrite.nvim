@@ -49,6 +49,12 @@ autowrite.setup = function(opts)
       end, {
         desc = 'Disable Autowrite for current buffer',
       })
+
+      vim.api.nvim_create_user_command('ToggleAutowrite', function()
+        autowrite.ToggleAutowrite()
+      end, {
+        desc = 'Toggle on and off Autowrite for current buffer',
+      })
     end
   else
     local error_msg = [[
@@ -91,6 +97,15 @@ end
 autowrite.DisableAutowrite = function()
   local buf = vim.api.nvim_get_current_buf()
   DisableAutowriteOnBuf(buf)
+end
+
+autowrite.ToggleAutowrite = function()
+  local buf = vim.api.nvim_get_current_buf()
+  if options.enabled_buffers[buf] == nil then
+    EnableAutowriteOnBuf(buf)
+  else
+    DisableAutowriteOnBuf(buf)
+  end
 end
 
 return autowrite
