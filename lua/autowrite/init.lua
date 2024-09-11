@@ -4,6 +4,8 @@ local autowrite = {}
 local options = {
 
   -- Allow autowrite to log any info notifications to the user
+  create_commands = true,
+  -- Allow autowrite to log any info notifications to the user
   verbose_info = true,
 }
 
@@ -34,13 +36,26 @@ autowrite.setup = function(opts)
       ---@diagnostic disable-next-line: assign-type-mismatch
       options[k] = v
     end
+
+    if options.create_commands then
+      vim.api.nvim_create_user_command('EnableAutowrite', function()
+        autowrite.EnableAutowrite()
+      end, {
+        desc = 'Enable Autowrite for current buffer',
+      })
+
+      vim.api.nvim_create_user_command('DisableAutowrite', function()
+        autowrite.EnableAutowrite()
+      end, {
+        desc = 'Disable Autowrite for current buffer',
+      })
+    end
   else
     local error_msg = [[
       Can't setup autowrite.nvim, correct syntax is: 
       require('autowrite').setup { ... }
       ]]
     notify(error_msg, vim.log.levels.ERROR)
-    return
   end
 end
 
