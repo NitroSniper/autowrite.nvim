@@ -7,6 +7,8 @@ local options = {
   create_commands = true,
   -- Allow autowrite to log any info notifications to the user
   verbose_info = true,
+  -- HACK Option: Fix Undo bug that happens on lazy
+  undo_hack = false,
 }
 
 -- autowrite private options
@@ -73,7 +75,21 @@ local function EnableAutowriteOnBuf(bufnr)
   else
     options.enabled_buffers[bufnr] = vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI' }, {
       buffer = bufnr,
-      command = 'silent write',
+      callback = function()
+        if options.undo_hack then
+          -- HACK:
+          -- For some reason in lazy.nvim (could be somethign else but I think it's lazy) the autocmd doesn't work correctly with undo
+          -- To put a bandage on this issue, I just made it so that the write command is part of undo block with undoj
+          -- This causes an error when doing an undo since undo cause a text change in which undoj tries to run but errors since
+          -- undoj can't run after an undo since there is nothing to join.
+          -- HOWEVER!!!, this solves the issue of it not being to all be undo in 1 undo so this "fix" the issue
+          pcall(function()
+            vim.cmd 'silent write | undoj'
+          end)
+        else
+          vim.cmd 'silent write'
+        end
+      end,
     })
   end
 end
