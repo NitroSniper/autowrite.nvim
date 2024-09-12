@@ -15,6 +15,7 @@ local options = {
 -- This is used to set options which cannot be changed by the public API
 local private_opts = {
   enabled_buffers = {},
+  global = false,
 }
 
 local notify = vim.schedule_wrap(function(msg, level, opts)
