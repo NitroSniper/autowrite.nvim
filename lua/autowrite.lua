@@ -2,13 +2,12 @@ local autowrite = {}
 
 -- autowrite default public options
 local options = {
-
-  -- Allow autowrite to log any info notifications to the user
+  -- creates :ToggleAutowrite, :EnableAutowrite, :DisableAutowrite command
   create_commands = true,
-  -- Allow autowrite to log any info notifications to the user
+  -- log any info notifications to the user
   verbose_info = true,
   -- HACK Option: Fix Undo bug that happens on lazy
-  undo_hack = false,
+  undo_hack = true,
 }
 
 -- autowrite private options

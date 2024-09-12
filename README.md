@@ -21,6 +21,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 ```lua
 {
   'NitroSniper/autowrite.nvim',
+  tag = '0.1.0', --locked to current release
   opts = {
     -- Default Options
 
