@@ -26,7 +26,7 @@ end)
 --- Setup autowrite comamnd with options
 --- This function is not pure so running it multiple times is unintended behaviour
 ---@param opts table
-autowrite.setup = function(opts)
+function autowrite.setup(opts)
   if type(opts) == 'table' then
     -- merge opts table to default table
     for k, v in pairs(opts) do
@@ -105,17 +105,17 @@ local function DisableAutowriteOnBuf(bufnr)
   end
 end
 
-autowrite.EnableAutowrite = function()
+function autowrite.EnableAutowrite()
   local buf = vim.api.nvim_get_current_buf()
   EnableAutowriteOnBuf(buf)
 end
 
-autowrite.DisableAutowrite = function()
+function autowrite.DisableAutowrite()
   local buf = vim.api.nvim_get_current_buf()
   DisableAutowriteOnBuf(buf)
 end
 
-autowrite.ToggleAutowrite = function()
+function autowrite.ToggleAutowrite()
   local buf = vim.api.nvim_get_current_buf()
   if options.enabled_buffers[buf] == nil then
     EnableAutowriteOnBuf(buf)
